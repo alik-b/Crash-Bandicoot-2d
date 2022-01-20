@@ -11,7 +11,7 @@ class Crash {
         this.x = 100;
         this.y = 100;
         this.velocity = 4;
-        this.scale = 4;
+        this.scale = 1.5;
 
         this.loadAnimations();
     };
@@ -28,13 +28,16 @@ class Crash {
 
         // idle left -> 4 frames
         // starts at (264, 114)
-        // w: 48, h: 65
+        // w: 53, h: 65
         // left
-        this.animations[0][0] = new Animator(this.sprite, 264, 114, 51, 65, 1, 0.15, 0, false, true); // idle
+        this.animations[0][0] = new Animator(this.sprite, 264, 114, 53, 65, 4, 0.2, 0, false, true); // idle
         // this.animations[3][1] = new Animator(this.sprite, 0, 66, 14, 21, 4, 0.15, 0, false, true); // running
 
-        // // right
-        // this.animations[1][0] = new Animator(this.sprite, 14, 44, 14, 21, 1, 0.15, 0, false, true); // idle
+        // idle right -> 4 frames
+        // starts at (490, 114)
+        // w: 53, h: 65
+        // right
+        this.animations[1][0] = new Animator(this.sprite, 490, 114, 50, 65, 4, 0.2, 0, false, true); // idle
         // this.animations[1][1] = new Animator(this.sprite, 0, 44, 14, 21, 4, 0.15, 0, false, true); // running
     };
 
@@ -65,6 +68,8 @@ class Crash {
     };
     
     draw (ctx) {
+        // idle left
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+        this.animations[this.facing + 1][this.state].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y, this.scale);
     };
 }
