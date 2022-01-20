@@ -26,19 +26,15 @@ class Crash {
             }
         }
 
-        // idle left -> 4 frames
-        // starts at (264, 114)
-        // w: 53, h: 65
-        // left
+        // LEFT
         this.animations[0][0] = new Animator(this.sprite, 264, 114, 53, 65, 4, 0.2, 0, false, true); // idle
+        // running left -> 
+        // starts at ()
         // this.animations[3][1] = new Animator(this.sprite, 0, 66, 14, 21, 4, 0.15, 0, false, true); // running
 
-        // idle right -> 4 frames
-        // starts at (490, 114)
-        // w: 53, h: 65
-        // right
+        // RIGHT
         this.animations[1][0] = new Animator(this.sprite, 490, 114, 50, 65, 4, 0.2, 0, false, true); // idle
-        // this.animations[1][1] = new Animator(this.sprite, 0, 44, 14, 21, 4, 0.15, 0, false, true); // running
+        this.animations[1][1] = new Animator(this.sprite, 45, 196, 58, 63, 14, 0.16, 0, false, true); // running
     };
 
     update() {
@@ -70,6 +66,11 @@ class Crash {
     draw (ctx) {
         // idle left
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+
+        //idle right
         this.animations[this.facing + 1][this.state].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y, this.scale);
+        // running right
+        this.animations[this.facing + 1][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 100, this.scale);
+
     };
 }
