@@ -28,9 +28,7 @@ class Crash {
 
         // LEFT
         this.animations[0][0] = new Animator(this.sprite, 264, 114, 53, 65, 4, 0.2, 0, false, true); // idle
-        // running left -> 
-        // starts at ()
-        // this.animations[3][1] = new Animator(this.sprite, 0, 66, 14, 21, 4, 0.15, 0, false, true); // running
+        this.animations[0][1] = new Animator(this.sprite, 45, 283, 58, 64, 14, 0.16, 0, false, true); // running
 
         // RIGHT
         this.animations[1][0] = new Animator(this.sprite, 490, 114, 50, 65, 4, 0.2, 0, false, true); // idle
@@ -66,6 +64,8 @@ class Crash {
     draw (ctx) {
         // idle left
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+        // running left
+        this.animations[this.facing][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x, this.y + 100, this.scale);
 
         //idle right
         this.animations[this.facing + 1][this.state].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y, this.scale);
