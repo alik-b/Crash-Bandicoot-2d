@@ -4,6 +4,22 @@
 <head>
     <meta charset="utf-8">
     <title>Crash Bandicoot 2d</title>
+                
+    <style>
+        @font-face {
+            font-family: crashFont;
+            src: url(assets/crash-a-like.ttf);
+        }
+        body {
+            font-family: crashFont;
+            font-size: 50px;
+        }
+
+        input.checkbox {
+            width: 50px;
+        }
+
+    </style>
   
     <script type="text/javascript" src="./src/engine/assetmanager.js"></script>
     <script type="text/javascript" src="./src/engine/animator.js"></script>
@@ -14,6 +30,10 @@
     <script type="text/javascript" src="./src/main.js"></script>
 </head>
 <body>
-    <canvas id="gameWorld" width="1024" height="768" style="background: green; border: 1px solid black"></canvas>
+    <canvas id="gameWorld" width="1400" height="650" style="background: green; border: 1px solid black"></canvas>
+
+    <div>
+        <input type="checkbox" name="checkbox" id="debug"> Debug <input type="checkbox" id="mute"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05"> Volume
+    </div>
 </body>
 </html>
