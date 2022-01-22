@@ -13,7 +13,7 @@ class Crash {
         this.state = 0;
 
         this.x = 100;
-        this.y = 100;
+        this.y = 500;
         this.velocity = 4;
         this.scale = 1.5;
 
@@ -26,8 +26,6 @@ class Crash {
             [567, 1272, 81, 77, this.x + 340, this.y + 38], 
             [660, 1276, 133, 80, this.x + 366, this.y + 40],
             [814, 1263, 105, 96, this.x + 352, this.y + 48] ];
-        // x = 100, y = 600
-        // center of 0 = (51, 47) // draw this at x = 151, y = 647
 
         this.loadAnimations();
     };
@@ -58,61 +56,65 @@ class Crash {
 
         // DEATHS
         this.animations[0][5] = new Animator(this.sprite, 0, 0, 0, 0, 8, 0.15, 0, false, true); // angel death
-        this.animations[1][5] = new Animator(this.sprite, 0, 0, 0, 0, 8, 0.15, 0, false, true);
+        this.animations[1][5] = new Animator(this.sprite, 0, 0, 0, 0, 8, 0.15, 0, false, true); // angel death
+        this.animations[1][6] = new Animator(this.sprite, 425, 1391, 62, 64, 4, 0.5, 0, false, true); // TNT/NITRO death
+
 
     };
 
     update() {
 
         // const WALK_SPEED = 100;
+        if (this.game.keys["ArrowRight"] || this.game.keys["d"]) { // run right
+            this.x += this.velocity;
+            this.facing = 1;
+            this.state = 1;
+        } else if (this.game.keys["ArrowUp"] || this.game.keys["w"]) { // jump 
+            this.y -= this.velocity;
+            this.facing = 0;
+            this.state = 1;
+        } else if (this.game.keys["ArrowLeft"] || this.game.keys["a"]) { // run left
+            this.x -= this.velocity;
+            this.facing = 0;
+            this.state = 1;
+        } else {
+            this.state = 0;
+        }
 
-        // if (this.game.keys["ArrowDown"] || this.game.keys["s"]) {
-        //     this.y += this.velocity;
-        //     this.facing = 0;
-        //     this.state = 1;
-        // } else if (this.game.keys["ArrowRight"] || this.game.keys["d"]) {
-        //     this.x += this.velocity;
-        //     this.facing = 1;
-        //     this.state = 1;
-        // } else if (this.game.keys["ArrowUp"] || this.game.keys["w"]) {
-        //     this.y -= this.velocity;
-        //     this.facing = 2;
-        //     this.state = 1;
-        // } else if (this.game.keys["ArrowLeft"] || this.game.keys["a"]) {
-        //     this.x -= this.velocity;
-        //     this.facing = 3;
-        //     this.state = 1;
-        // } else {
-        //     this.state = 0;
-        // }
+        if (this.game.keys[" "]) { // spin
+            this.state = 2;
+        }
         
     };
     
     draw (ctx) {
-        // idle left
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
-        // running left
-        this.animations[this.facing][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x, this.y + 100, this.scale);
-        // spinning left
-        this.animations[this.facing][this.state + 2].drawFrame(this.game.clockTick, ctx, this.x, this.y + 200, this.scale);
-        // jumping left
-        this.animations[this.facing][this.state + 3].drawFrame(this.game.clockTick, ctx, this.x, this.y + 300, this.scale);
-        // falling left
-        this.animations[this.facing][this.state + 4].drawFrame(this.game.clockTick, ctx, this.x, this.y + 400, this.scale);
+        // // idle left
+        // this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+        // // running left
+        // this.animations[this.facing][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x, this.y + 100, this.scale);
+        // // spinning left
+        // this.animations[this.facing][this.state + 2].drawFrame(this.game.clockTick, ctx, this.x, this.y + 200, this.scale);
+        // // jumping left
+        // this.animations[this.facing][this.state + 3].drawFrame(this.game.clockTick, ctx, this.x, this.y + 300, this.scale);
+        // // falling left
+        // this.animations[this.facing][this.state + 4].drawFrame(this.game.clockTick, ctx, this.x, this.y + 400, this.scale);
 
-        // idle right
-        this.animations[this.facing + 1][this.state].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y, this.scale);
-        // running right
-        this.animations[this.facing + 1][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 100, this.scale);
-        // spinning right
-        this.animations[this.facing + 1][this.state + 2].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 200, this.scale);
-        // jumping right
-        this.animations[this.facing + 1][this.state + 3].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 300, this.scale);
-        // falling right
-        this.animations[this.facing + 1][this.state + 4].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 400, this.scale);
+        // // idle right
+        // this.animations[this.facing + 1][this.state].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y, this.scale);
+        // // running right
+        // this.animations[this.facing + 1][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 100, this.scale);
+        // // spinning right
+        // this.animations[this.facing + 1][this.state + 2].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 200, this.scale);
+        // // jumping right
+        // this.animations[this.facing + 1][this.state + 3].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 300, this.scale);
+        // // falling right
+        // this.animations[this.facing + 1][this.state + 4].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 400, this.scale);
         
-        // angel death
-        this.animations[this.facing][this.state + 5].drawFrameFromArr(this.game.clockTick, ctx, this.angel_death_arr, this.scale);
+        // // angel death
+        // this.animations[this.facing][this.state + 5].drawFrameFromArr(this.game.clockTick, ctx, this.angel_death_arr, this.scale);
 
+        // // TNT/NITRO death
+        // this.animations[this.facing + 1][this.state + 6].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 500, this.scale);
     };
 }
