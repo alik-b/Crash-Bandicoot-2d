@@ -34,6 +34,37 @@ class Animator {
         // }
     };
 
+    //     0        1      2      3     4  5
+    // [[xStart, yStart, width, height, x, y]]
+    drawFrameFromArr(tick, ctx, arr, scale) {
+        this.elapsedTime += tick;
+
+        if (this.isDone()) {
+            if (this.loop) {
+                this.elapsedTime -= this.totalTime;
+            } else {
+                return;
+            }
+        }
+
+        let frame = this.currentFrame();
+        if (this.reverse) frame = this.frameCount - frame - 1;
+
+        console.log("x: " + arr[frame][4] + ", y: " + arr[frame][5]);
+
+        ctx.drawImage(this.spritesheet,
+            arr[frame][0], arr[frame][1], //source from sheet
+            arr[frame][2], arr[frame][3],
+            arr[frame][4], arr[frame][5],
+            arr[frame][2] * scale,
+            arr[frame][3] * scale);
+
+        // if (PARAMS.DEBUG) {
+        //     ctx.strokeStyle = 'Green';
+        //     ctx.strokeRect(x, y, this.width * scale, this.height * scale);
+        // }
+    };
+
     currentFrame() {
         return Math.floor(this.elapsedTime / this.frameDuration);
     };
