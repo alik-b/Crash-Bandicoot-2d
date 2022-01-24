@@ -12,6 +12,7 @@ ASSET_MANAGER.downloadAll(() => {
 	canvas.height = innerHeight;
 
 	gameEngine.addEntity(new Crash(gameEngine));
+	gameEngine.addEntity(new Platform(gameEngine));
 
 	gameEngine.init(ctx);
 
