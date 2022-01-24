@@ -6,29 +6,40 @@ class Crash {
         this.sprite = ASSET_MANAGER.getAsset("./assets/images/crash_spritesheet.png");
 
         // 0 = left, 1 = right
-        this.facing = 0;
+        this.facing = 1;
 
         // 0 = idle, 1 = running, 2 = spinning, 3 = jumping,
         // 4 = falling, 5 = Angel Death, 6 = TNT/NitroDeath
         this.state = 0;
 
-        this.x = 100;
-        this.y = 500;
-        this.velocity = 4;
+        this.position = {
+            x: 100,
+            y: 100
+        };
+
+        this.velocity = {
+            x: 0,
+            y: 0
+        };
+
+        this.width = 53;
+        this.height = 103;
+        this.gravity = 1.5;
         this.scale = 1.5;
 
-        this.angel_death_arr = 
+        this.angel_death_arr =
         [   [18, 1257, 103, 95, this.x + 351, this.y + 47],
-            [132, 1269, 121, 82, this.x + 360, this.y + 41], 
+            [132, 1269, 121, 82, this.x + 360, this.y + 41],
             [267, 1274, 94, 77, this.x + 347, this.y + 38],
             [374, 1274, 89, 77, this.x + 344, this.y + 38],
             [478, 1272, 75, 78, this.x + 337, this.y + 39],
-            [567, 1272, 81, 77, this.x + 340, this.y + 38], 
+            [567, 1272, 81, 77, this.x + 340, this.y + 38],
             [660, 1276, 133, 80, this.x + 366, this.y + 40],
             [814, 1263, 105, 96, this.x + 352, this.y + 48] ];
 
         this.loadAnimations();
     };
+
 
     loadAnimations() {
         // Animator(this.sprite, x, y, width, height, framesCount, duration, padding, reverse, loop));
@@ -42,14 +53,14 @@ class Crash {
 
         // LEFT
         this.animations[0][0] = new Animator(this.sprite, 264, 114, 53, 65, 4, 0.2, 0, false, true); // idle
-        this.animations[0][1] = new Animator(this.sprite, 45, 283, 58, 64, 14, 0.16, 0, false, true); // running
+        this.animations[0][1] = new Animator(this.sprite, 45, 283, 58, 64, 14, 0.12, 0, false, true); // running
         this.animations[0][2] = new Animator(this.sprite, 53, 375, 59, 64, 4, 0.12, 0, true, true); // spinning
         this.animations[0][3] = new Animator(this.sprite, 749, 547, 50, 67, 2, 0.2, 0, false, true); // jumping
         this.animations[0][4] = new Animator(this.sprite, 131, 465, 53, 54, 1, 0.2, 0, false, true); // falling
-        
+
         // RIGHT
         this.animations[1][0] = new Animator(this.sprite, 490, 114, 50, 65, 4, 0.2, 0, false, true); // idle
-        this.animations[1][1] = new Animator(this.sprite, 45, 196, 58, 63, 14, 0.16, 0, false, true); // running
+        this.animations[1][1] = new Animator(this.sprite, 45, 196, 58, 64, 14, 0.12, 0, true, true); // running
         this.animations[1][2] = new Animator(this.sprite, 53, 375, 59, 64, 4, 0.12, 0, false, true); // spinning
         this.animations[1][3] = new Animator(this.sprite, 603, 547, 50, 67, 2, 0.2, 0, false, true); // jumping
         this.animations[1][4] = new Animator(this.sprite, 52, 465, 53, 54, 1, 0.2, 0, false, true); // falling
@@ -64,35 +75,210 @@ class Crash {
 
     update() {
 
-        // const WALK_SPEED = 100;
-        if (this.game.keys["ArrowRight"] || this.game.keys["d"]) { // run right
-            this.x += this.velocity;
+        
+        let right = this.game.keys["ArrowRight"] || this.game.keys["d"];
+        let left = this.game.keys["ArrowLeft"] || this.game.keys["a"];
+        let jump = this.game.keys["ArrowUp"] || this.game.keys["w"];
+        let crouch = this.game.keys["ArrowDown"] || this.game.keys["s"];
+
+        if (jump) {
+            this.velocity.y -= 3;
+        }
+
+        if (right) {
+            this.velocity.x = 5;
             this.facing = 1;
             this.state = 1;
-        } else if (this.game.keys["ArrowUp"] || this.game.keys["w"]) { // jump 
-            this.y -= this.velocity;
-            this.facing = 0;
-            this.state = 1;
-        } else if (this.game.keys["ArrowLeft"] || this.game.keys["a"]) { // run left
-            this.x -= this.velocity;
+        } else if (left) {
+            this.velocity.x = -5;
             this.facing = 0;
             this.state = 1;
         } else {
             this.state = 0;
+            this.velocity.x = 0;
         }
 
-        if (this.game.keys[" "]) { // spin
-            this.state = 2;
+        // if (jump) {
+        //     this.velocity.y -= 2;
+        //     this.state = 3;
+        // } else if (right) {
+        //     this.facing = 1;
+        //     this.state = 1;
+        //     this.velocity.x += 0.1;
+        // } else if (left) {
+        //     this.facing = 0;
+        //     this.state = 1;
+        //     this.velocity.x -= 0.1;
+        // } else {
+        //     this.state = 0;
+        //     this.velocity.x = 0;
+        // }
+
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+
+        if (this.position.y + this.height + this.velocity.y <= 500) {
+            this.velocity.y += this.gravity;
+        } else {
+            this.velocity.y = 0;
         }
-        
+
+         
+
+        // const ACC_RUN = 200.390625;
+        // const MAX_RUN = 153.75;
+        // const DEC_REL = 182.8125;
+
+        // const MAX_FALL = 200;
+
+        // let right = this.game.keys["ArrowRight"] || this.game.keys["d"];
+        // let left = this.game.keys["ArrowLeft"] || this.game.keys["a"];
+        // let jump = this.game.keys["ArrowUp"] || this.game.keys["w"];
+
+        // if (this.state == 0 || this.state == 1) {
+        //     if (left) {
+        //         this.x -= 6;
+        //         this.facing = 0;
+        //         this.state = 1;
+        //     } else if (right) {
+        //         this.x += 6;
+        //         this.facing = 1;
+        //         this.state = 1;
+        //     } else if (jump) {
+        //         this.state = 3;
+        //     } else {
+        //         this.state = 0;
+        //     }
+        //     this.velocity_y += this.gravity * this.game.clockTick;
+        // } else if (this.state == 3) {
+        //     this.velocity_y -= MAX_FALL * this.game.clockTick;
+
+        //     if (right) this.x += 6;
+        //     else if (left) this.x -= 6;
+
+        //     if (this.y == 500) this.state = 0;
+        // } else {
+        //     this.state = 0;
+        // }
+
+        // console.log(this.velocity_y);
+
+        // // max speed calculation
+        // if (500 - this.y >= 100) this.state = 4;
+
+        // //this.y += this.velocity_y * this.game.clockTick;
+
+        // if (this.y >= 500) {
+        //     this.y = 500;
+        // }
+// ------------------------------------------------------------------------------
+        // if (this.state != 3) {
+        //     if (left && !right) {
+        //             this.x -= 6;
+        //             this.facing = 0;
+        //             this.state = 1;
+        //     }
+        //         // if (left && !right) {
+        //         //     this.velocity_x -= ACC_RUN * this.game.clockTick;
+        //         // } else {
+        //         //     this.velocity_x += DEC_REL * this.game.clockTick;
+        //         // }
+        //     if (right && !left)  {
+        //             this.x += 6;
+        //             this.facing = 1;
+        //             this.state = 1;
+        //     }
+        //         // if (right && !left) {
+        //         //     this.velocity_x += ACC_RUN * this.game.clockTick;
+        //         // } else {
+        //         //     this.velocity_x -= DEC_REL * this.game.clockTick;
+        //         // }
+        //     } else if (jump) {
+        //         this.state = 3;
+        //     } else {
+        //         this.state = 0;
+        //     }
+
+        //     this.velocity_y += this.gravity * this.game.clockTick;
+
+        //     if (jump) { // jump
+        //         this.velocity_y = -300;
+        //         this.state = 3;
+        //     }
+
+        // } else {
+        //     // air physics
+        //     // vertical physics
+        //     if (right && !left) {
+        //         this.velocity_x += ACC_RUN * this.game.clockTick;
+        //     } else if (left && !right) {
+        //         this.velocity_x -= ACC_RUN * this.game.clockTick;
+        //     } else {
+        //         // do nothing
+        //     }
+
+        // }
+
+        // this.velocity_y += this.gravity * this.game.clockTick;
+
+        // // max speed calculation
+        // if (this.velocity_y >= MAX_FALL) this.velocity_y = MAX_FALL;
+        // if (this.velocity_y <= -MAX_FALL) this.velocity_y = -MAX_FALL;
+
+        // if (this.velocity_x >= MAX_RUN) this.velocity_x = MAX_RUN;
+        // if (this.velocity_x <= -MAX_RUN) this.velocity_x = -MAX_RUN;
+
+        // // update position
+        // this.x += this.velocity_x * this.game.clockTick;
+        // this.y += this.velocity_y * this.game.clockTick;
+
+        // // update state
+        // // if (this.state !== 3) {
+        // //     if (Math.abs(this.velocity_x) > MAX_RUN) this.state = 1;
+        // //     else this.state = 0;
+        // // }
+
+        // // update direction
+        // if (this.velocity_x < 0) this.facing = 0;
+        // if (this.velocity_x > 0) this.facing = 1;
+
+        // if (this.y >= 500) {
+        //     this.y = 500;
+        // }
+
+
+        // // jump
+        // if (this.state == 3) {
+        //     this.velocity_y = -200;
+        // } else if (this.state == 4) {
+
+        // } else {
+        //     this.state = 0;
+        // }
+
+        // this.y += this.velocity_y * this.game.clockTick;
+        // this.velocity_y += this.gravity * this.game.clockTick;
+
+        // if (this.game.keys[" "]) { // spin
+        //     this.state = 2;
+        // }
+
     };
-    
+
     draw (ctx) {
-        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.position.x, this.position.y, this.scale);
+
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 10;
+        ctx.beginPath();
+        ctx.moveTo(0, 500);
+        ctx.lineTo(1000, 500);
+        ctx.stroke();
+
         // // idle left
         // this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
         // // running left
-        // this.animations[this.facing][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x, this.y + 100, this.scale);
+        //this.animations[this.facing][this.state + 1].drawFrame(this.game.clockTick, ctx, 100, 100, this.scale);
         // // spinning left
         // this.animations[this.facing][this.state + 2].drawFrame(this.game.clockTick, ctx, this.x, this.y + 200, this.scale);
         // // jumping left
@@ -103,18 +289,21 @@ class Crash {
         // // idle right
         // this.animations[this.facing + 1][this.state].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y, this.scale);
         // // running right
-        // this.animations[this.facing + 1][this.state + 1].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 100, this.scale);
+        //this.animations[this.facing + 1][this.state + 1].drawFrame(this.game.clockTick, ctx, 200, 100, this.scale);
         // // spinning right
         // this.animations[this.facing + 1][this.state + 2].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 200, this.scale);
         // // jumping right
         // this.animations[this.facing + 1][this.state + 3].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 300, this.scale);
         // // falling right
         // this.animations[this.facing + 1][this.state + 4].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 400, this.scale);
-        
+
         // // angel death
         // this.animations[this.facing][this.state + 5].drawFrameFromArr(this.game.clockTick, ctx, this.angel_death_arr, this.scale);
 
         // // TNT/NITRO death
         // this.animations[this.facing + 1][this.state + 6].drawFrame(this.game.clockTick, ctx, this.x + 100, this.y + 500, this.scale);
+
+        // TEST
+        //this.animations[0][0].drawFrame(this.game.clockTick, ctx, 200, 300, this.scale);
     };
 }
