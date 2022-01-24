@@ -9,6 +9,13 @@ class Platform {
 
         this.width = 200;
         this.height = 20;
+
+        this.updateBB();
+    }
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.position.x, this.position.y, this.width, this.height);
     }
 
     update() {
