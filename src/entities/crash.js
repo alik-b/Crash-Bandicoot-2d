@@ -82,6 +82,7 @@ class Crash {
         let crouch = this.game.keys["ArrowDown"] || this.game.keys["s"];
 
         if (jump) {
+            this.state = 3;
             this.velocity.y -= 3;
         }
 
@@ -110,14 +111,6 @@ class Crash {
 
     draw (ctx) {
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.position.x, this.position.y, this.scale);
-
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 10;
-        ctx.beginPath();
-        ctx.moveTo(0, 500);
-        ctx.lineTo(1000, 500);
-        ctx.stroke();
-
         // // idle left
         // this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
         // // running left
