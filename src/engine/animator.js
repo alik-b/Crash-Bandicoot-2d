@@ -59,10 +59,10 @@ class Animator {
             arr[frame][2] * scale,
             arr[frame][3] * scale);
 
-        // if (PARAMS.DEBUG) {
-        //     ctx.strokeStyle = 'Green';
-        //     ctx.strokeRect(x, y, this.width * scale, this.height * scale);
-        // }
+        if (true) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(x, y, this.width * scale, this.height * scale);
+        }
     };
 
     currentFrame() {
