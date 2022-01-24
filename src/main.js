@@ -8,6 +8,9 @@ ASSET_MANAGER.downloadAll(() => {
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = false;
 
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+
 	gameEngine.addEntity(new Crash(gameEngine));
 
 	gameEngine.init(ctx);
