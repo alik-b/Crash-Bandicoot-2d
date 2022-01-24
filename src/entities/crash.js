@@ -14,7 +14,7 @@ class Crash {
 
         this.position = {
             x: 100,
-            y: 100
+            y: 500
         };
 
         this.velocity = {
@@ -22,10 +22,12 @@ class Crash {
             y: 0
         };
 
-        this.width = 53;
-        this.height = 103;
-        this.gravity = 1.5;
         this.scale = 1.5;
+        this.width = 53 * this.scale;
+        this.height = 65 * this.scale;
+        this.gravity = 1.5;
+
+        this.updateBB();
 
         this.angel_death_arr =
         [   [18, 1257, 103, 95, this.x + 351, this.y + 47],
@@ -73,6 +75,11 @@ class Crash {
 
     };
 
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.position.x, this.position.y, this.width, this.height);
+    }
+
     update() {
 
         
@@ -106,6 +113,21 @@ class Crash {
         } else {
             this.velocity.y = 0;
         }
+
+        // collisions
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity instanceof Platform) {
+                if (that.position.y + that.height <= entity.position.y 
+                    && that.position.y + that.height + that.velocity.y >= entity.position.y
+                    && that.position.x + that.width >= entity.position.x 
+                    && that.position.x <= entity.position.x + entity.width) {
+                    console.log("collided with top of platform");
+                    that.velocity.y = 0;
+                }
+
+            }
+        });
 
     };
 
