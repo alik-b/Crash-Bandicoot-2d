@@ -13,7 +13,7 @@ class Crash {
         this.state = 0;
 
         this.position = {
-            x: 100,
+            x: 250,
             y: 500
         };
 
@@ -90,29 +90,56 @@ class Crash {
 
         if (jump) {
             this.state = 3;
-            this.velocity.y -= 3;
+            this.velocity.y -= 200 * this.game.clockTick;
         }
 
-        if (right) {
-            this.velocity.x = 5;
+        if (right && this.position.x < 400) {
+            this.velocity.x = 500 * this.game.clockTick;
             this.facing = 1;
             this.state = 1;
-        } else if (left) {
-            this.velocity.x = -5;
+        } else if (left && this.position.x > 100) {
+            this.velocity.x = -(500 * this.game.clockTick);
             this.facing = 0;
             this.state = 1;
         } else {
-            this.state = 0;
+
+            if (this.velocity.y < 0) {
+                this.state = 3;
+            } else if (this.velocity.y > 0) {
+                this.state = 4;
+            } else {
+                this.state = 0;
+            }
             this.velocity.x = 0;
+
+            if (right) {
+                this.state = 1;
+                this.game.entities.forEach(function (platform) {
+                    if (platform instanceof Platform) {
+                        platform.position.x -= 5;
+        
+                    }
+                });
+            } else if (left)  {
+                this.state = 1;
+                this.game.entities.forEach(function (platform) {
+                    if (platform instanceof Platform) {
+                        platform.position.x += 5;
+        
+                    }
+                });
+            }
         }
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+        this.velocity.y += this.gravity;
 
-        if (this.position.y + this.height + this.velocity.y <= 500) {
-            this.velocity.y += this.gravity;
-        } else {
-            this.velocity.y = 0;
-        }
+        // if (this.position.y + this.velocity.y <= 500) {
+        //     this.velocity.y += this.gravity;
+        //     //this.state = 3;
+        // } else {
+        //     this.velocity.y = 0;
+        // }
 
         // collisions
         var that = this;
@@ -122,12 +149,14 @@ class Crash {
                     && that.position.y + that.height + that.velocity.y >= entity.position.y
                     && that.position.x + that.width >= entity.position.x 
                     && that.position.x <= entity.position.x + entity.width) {
-                    console.log("collided with top of platform");
+                    //console.log("collided with top of platform");
                     that.velocity.y = 0;
                 }
 
             }
         });
+
+        // https://www.youtube.com/watch?v=4q2vvZn5aoo youtube link to awesome javascript tutorial
 
     };
 
