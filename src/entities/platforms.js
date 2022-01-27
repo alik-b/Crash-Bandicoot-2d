@@ -1,14 +1,27 @@
 class Platform {
-    constructor(game) {
+    constructor(game, x, y, thickness) {
         this.game = game;
 
-        this.position = {
-            x: 600,
-            y: 200
+        this.spritesheet = ASSET_MANAGER.getAsset("./assets/images/Tiles/tiles.png");
+
+        this.w = 32;
+        if (thickness == 0) {
+            this.h = 47;
+        } else {
+            this.h = 18;
         }
 
-        this.width = 200;
-        this.height = 20;
+        this.animator = new Animator(this.spritesheet, 3, 0, this.w, this.h, 1, 0.1, 0, false, true);
+        // 0 = thick, 1 = thin
+        this.thickness = thickness;
+
+        this.width = this.w*4;
+        this.height = this.h*4;
+
+        this.position = {
+            x: x,
+            y: y
+        }
 
         this.updateBB();
     }
@@ -23,7 +36,8 @@ class Platform {
     };
 
     draw(ctx) {
-        ctx.fillStyle = 'blue';
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+        this.animator.drawFrame(this.game.clockTick, ctx, this.position.x, this.position.y, 4);
+        // ctx.fillStyle = 'blue';
+        // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     };
 }
