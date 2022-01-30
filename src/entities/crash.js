@@ -54,14 +54,14 @@ class Crash {
         }
 
         // LEFT
-        this.animations[0][0] = new Animator(this.sprite, 264, 114, 53, 65, 4, 0.2, 0, false, true); // idle
+        this.animations[0][0] = new Animator(this.sprite, 264, 114, 51, 65, 4, 0.2, 0, false, true); // idle
         this.animations[0][1] = new Animator(this.sprite, 45, 283, 58, 64, 14, 0.12, 0, false, true); // running
         this.animations[0][2] = new Animator(this.sprite, 53, 375, 59, 64, 4, 0.12, 0, true, true); // spinning
         this.animations[0][3] = new Animator(this.sprite, 749, 547, 50, 67, 2, 0.2, 0, false, true); // jumping
         this.animations[0][4] = new Animator(this.sprite, 131, 465, 53, 54, 1, 0.2, 0, false, true); // falling
 
         // RIGHT
-        this.animations[1][0] = new Animator(this.sprite, 490, 114, 50, 65, 4, 0.2, 0, false, true); // idle
+        this.animations[1][0] = new Animator(this.sprite, 490, 113, 51, 65, 4, 0.2, 0, false, true); // idle
         this.animations[1][1] = new Animator(this.sprite, 45, 196, 58, 64, 14, 0.12, 0, true, true); // running
         this.animations[1][2] = new Animator(this.sprite, 53, 375, 59, 64, 4, 0.12, 0, false, true); // spinning
         this.animations[1][3] = new Animator(this.sprite, 603, 547, 50, 67, 2, 0.2, 0, false, true); // jumping
