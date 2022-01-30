@@ -11,7 +11,8 @@ ASSET_MANAGER.downloadAll(() => {
 	ctx.imageSmoothingEnabled = false;
 
 	canvas.width = innerWidth;
-	canvas.height = 780
+	canvas.height = 780;
+	console.log("width: " + canvas.width);
 
 	gameEngine.addEntity(new Crash(gameEngine));
 	start = -1000;
@@ -23,11 +24,10 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.addEntity(new Platform(gameEngine, 500+128, 200, 1));
 	gameEngine.addEntity(new Platform(gameEngine, 500+128*2, 200, 1));
 
-	gameEngine.addEntity(new Background(gameEngine, 0, 0));
-	gameEngine.addEntity(new Background(gameEngine, 320, 0));
-	gameEngine.addEntity(new Background(gameEngine, 320*2, 0));
-	gameEngine.addEntity(new Background(gameEngine, 320*3, 0));
-
+	i = 0;
+	for (i = 0; i < canvas.width / 320; i++) {
+		gameEngine.addEntity(new Background(gameEngine, 320*i, 0));		
+	}
 	gameEngine.init(ctx);
 
 	gameEngine.start();
