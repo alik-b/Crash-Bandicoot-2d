@@ -97,7 +97,7 @@
                         this.velocity.x = 500 * this.game.clockTick;
                         this.facing = 1;
                         this.state = 1;
-                    } else if (left) {
+                    } else if (left && this.position.x > -217) {
                         this.velocity.x = -(500 * this.game.clockTick);
                         this.facing = 0;
                         this.state = 1;
@@ -113,15 +113,17 @@
                     }
 
                     if (right) {
-                        if (this.velocity.x < 13) {
-                            this.velocity.x += 30 * this.game.clockTick;
+                        if (this.velocity.x < 11) {
+                            this.velocity.x += 20 * this.game.clockTick;
                         }
                         this.facing = 1;
-                    }   else if (left) {
-                        if (this.velocity.x > -13) {
-                            this.velocity.x -= 30 * this.game.clockTick;
-                        }
-                        this.facing = 0;
+                    }   else if (left && this.position.x > -217) {
+                            if (this.velocity.x > -11) {
+                                this.velocity.x -= 20 * this.game.clockTick;
+                            }
+                            this.facing = 0;
+                    } else {
+                        this.velocity.x = 0;
                     }
                 }
             }
@@ -142,13 +144,15 @@
                     }
                 }
             });
-    
+            
             // https://www.youtube.com/watch?v=4q2vvZn5aoo youtube link to awesome javascript tutorial
     
         };
 
     draw (ctx) {
-        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.position.x, this.position.y, this.scale);
+        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, this.scale);
+
+        console.log(this.position.x);
         // // idle left
         // this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
         // // running left
