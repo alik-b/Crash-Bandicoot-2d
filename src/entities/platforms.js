@@ -90,16 +90,70 @@ class Wall {
     }
 
     updateBB() {
-        this.lastBB = this.BB;
         this.BB = new BoundingBox(this.position.x, this.position.y, this.width*this.scale, this.height*this.scale);
+        this.lastBB = this.BB;
     }
 
     update() {
+
+        // collisions
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity instanceof Crash && that.BB.collide(entity.BB)) {
+                if(that.BB.right <= entity.lastBB.left ){
+                    entity.position.x = that.BB.right;
+                }
+                if(that.BB.left >= entity.lastBB.right ){
+                    entity.position.x = that.BB.left - entity.width;
+                }
+                if(that.BB.bottom <= entity.lastBB.top){
+                    entity.position.y = that.BB.bottom;
+                }
+                if(that.BB.top >= entity.lastBB.bottom){
+                    entity.position.y = that.BB.top -  entity.height;
+                }
+                entity.updateBB();
+            }
+        });
+        
+        // var wall = this;
+        // this.game.entities.forEach(function (crash) {
+        //     if (crash instanceof Crash && wall.BB.collide(crash.BB)) {
+
+        //         if (wall.BB.left <= crash.lastBB.right) {
+        //             crash.position.x = wall.BB.left - crash.width;
+        //         } 
+        //         if (wall.BB.right >= crash.lastBB.left) {
+        //             crash.position.x = wall.BB.right + 1;
+        //         }
+
+        //         // if (that.BB.right <= entity.lastBB.left ){
+        //         //     entity.position.x = that.lastBB.left - entity.width;
+        //         // }  else if (that.BB.left <= entity.lastBB.right) {
+        //         //     entity.position.x = that.BB.left - entity.width;
+        //         // }
+
+        //         // if (that.position.y + that.height <= entity.position.y 
+        //         //     && that.position.y + that.height + that.velocity.y >= entity.position.y
+        //         //     && that.position.x + that.width >= entity.position.x 
+        //         //     && that.position.x <= entity.position.x + entity.width) {
+        //         //     //console.log("collided with top of platform");
+        //         //     that.velocity.y = 0;
+        //         // }
+        //     }
+        // });
 
     };
 
     draw(ctx) {
         this.animator.drawFrame(this.game.clockTick, ctx, this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, 4);
+
+        if(document.getElementById("debug").checked){
+            //this.BB.draw(ctx, 'red');
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        }
+
         // ctx.fillStyle = 'blue';
         // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     };

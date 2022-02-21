@@ -25,7 +25,9 @@ class Background {
     };
 
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, this.position.x, this.position.y, 4);
+        ctx.drawImage(this.spritesheet,
+            0, 0, 80, 176, this.position.x, this.position.y, 80 * 4, 176 * 4 + 80);
+        // this.animator.drawFrame(this.game.clockTick, ctx, this.position.x, this.position.y, 4);
         // ctx.fillStyle = 'blue';
         // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     };

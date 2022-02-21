@@ -114,12 +114,12 @@
 
                     if (right) {
                         if (this.velocity.x < 11) {
-                            this.velocity.x += 20 * this.game.clockTick;
+                            this.velocity.x += 18 * this.game.clockTick;
                         }
                         this.facing = 1;
                     }   else if (left && this.position.x > -217) {
                             if (this.velocity.x > -11) {
-                                this.velocity.x -= 20 * this.game.clockTick;
+                                this.velocity.x -= 18 * this.game.clockTick;
                             }
                             this.facing = 0;
                     } else {
@@ -144,7 +144,7 @@
                     }
                 }
             });
-            
+            this.updateBB();
             // https://www.youtube.com/watch?v=4q2vvZn5aoo youtube link to awesome javascript tutorial
     
         };
@@ -152,7 +152,11 @@
     draw (ctx) {
         this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.position.x - this.game.camera.x, this.position.y - this.game.camera.y, this.scale);
 
-        console.log(this.position.x);
+        if(document.getElementById("debug").checked){
+            //this.BB.draw(ctx, 'red');
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        }
         // // idle left
         // this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
         // // running left
